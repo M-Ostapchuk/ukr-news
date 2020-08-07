@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 // Redux
 import { connect } from "react-redux";
 import { setPageUrl } from "../../redux/news/news.actions";
@@ -18,24 +18,24 @@ import {
 } from "../../components/page-overview/page.overview.styles";
 
 // Components
-import Header from "../../components/header/header.component";
 import Item from "../../components/news-item/news-item.component";
 import Spinner from "../../components/spinner/spinner.component";
 import { Route } from "react-router";
 import ItemOverview from "../../components/item-overview/item-overview.component";
 import { useEffect } from 'react';
 
+
 const HomePage = ({ collections, setPageUrl, url, isFetching,match, history }) => {
 
   useEffect(() => {
     setPageUrl({ country: url.country, category: ' ' });
-  },[])
+  },[match.url])
+
 
   return (
     <React.Fragment>
       <Route exact path={`${match.path}`} >
         <OverviewContainer>
-          <Header />
           {isFetching ? (
             <Spinner />
           ) : (

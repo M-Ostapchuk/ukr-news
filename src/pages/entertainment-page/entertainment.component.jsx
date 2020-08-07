@@ -1,5 +1,4 @@
-import React, { useEffect } from "react";
-import Header from "../../components/header/header.component";
+import React, { useEffect, useCallback } from "react";
 import {
   OverviewContainer,
   OverviewWrapper,
@@ -18,6 +17,7 @@ import Spinner from "../../components/spinner/spinner.component";
 import { Route } from "react-router";
 import ItemOverview from '../../components/item-overview/item-overview.component';
 
+
 const Entertainment = ({
   collections,
   setPageUrl,
@@ -30,13 +30,12 @@ const Entertainment = ({
 
   useEffect(() => {
     setPageUrl({ country: url.country, category: category });
-  }, []);
+  }, [match.url]);
 
   return (
     <React.Fragment>
       <Route exact path={`${match.path}`} >
       <OverviewContainer>
-        <Header />
         {isFetching ? (
           <Spinner />
         ) : (

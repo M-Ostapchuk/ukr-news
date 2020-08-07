@@ -2,6 +2,7 @@ import { put, call, takeEvery, all } from "redux-saga/effects";
 import { fetchCollectionSuccess, fetchCollectionFailure } from "./news.actions";
 import NewsActionTypes from "./news.types";
 
+
 export function* fetchNewsAsync(action) {
   try {
     const newsCollection = yield fetch(action.payload);

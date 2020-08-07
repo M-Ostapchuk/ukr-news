@@ -1,5 +1,4 @@
-import React from "react";
-import Header from "../../components/header/header.component";
+import React, { useCallback } from "react";
 import {
   OverviewContainer,
   OverviewWrapper,
@@ -30,13 +29,13 @@ const Science = ({
 
   useEffect(() => {
     setPageUrl({ country: url.country, category: category });
-  }, []);
+  }, [match.url]);
+
 
   return (
     <React.Fragment>
       <Route exact path={`${match.path}`}>
         <OverviewContainer>
-          <Header />
           {isFetching ? (
             <Spinner />
           ) : (

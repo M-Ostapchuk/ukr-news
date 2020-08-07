@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback } from "react";
+import React, { Component, useEffect, useCallback } from "react";
 
 // Components
 import Item from "../../components/news-item/news-item.component";
@@ -17,42 +17,58 @@ import {
   selectPageUrl,
   selectFetching,
 } from "../../redux/news/news.selectors";
-import { setPageUrl } from "../../redux/news/news.actions";
 
 import ItemOverview from "../../components/item-overview/item-overview.component";
 
 import { Route } from "react-router";
 import Spinner from "../../components/spinner/spinner.component";
+import {
+  selectUserCollections,
+  selectUserFetching,
+} from "../../redux/user/user.selectors";
+import { updateUserCollections } from "../../redux/user/user.actions";
+import { getCurrentUser, db } from "../../firebase/firebase";
 
-
-const Busines = ({
-  collections,
+const UserPage = ({
   match,
-  setPageUrl,
-  url,
-  isFetching,
   history,
+  userCollections,
+  isUserFetching,
+  updateUserCollections,
 }) => {
-  const category = match.url.replace(/\//, "");
-
   useEffect(() => {
-    setPageUrl({ country: url.country, category: category });
-  }, [match.url]);
+    getUserDataHandler();
+  }, [match]);
+
+  const getUserDataHandler = async () => {
+    const user = await getCurrentUser();
+    const data = [];
+    const collectionRef = db.collection(`users/${user.uid}/collections`);
+    collectionRef.onSnapshot(async (snapshot) => {
+      await snapshot.docs.forEach((doc) => {
+        data.push(doc.data());
+      });
+      updateUserCollections(data);
+      data.splice(0, data.length);
+    });
+  };
 
   return (
     <React.Fragment>
       <Route exact path={`${match.path}`}>
         <OverviewContainer>
-          {isFetching ? (
+          {isUserFetching ? (
             <Spinner />
           ) : (
             <OverviewWrapper>
-              {collections.map((item) => (
+              {userCollections.map((item) => (
                 <Item
                   key={item.id}
                   item={item}
                   match={match}
                   history={history}
+                  isWriteWhole="true"
+                  isItemFromFirebase="true"
                 />
               ))}
             </OverviewWrapper>
@@ -68,10 +84,12 @@ const MapStateToProps = createStructuredSelector({
   collections: selectCollectionsWithId,
   url: selectPageUrl,
   isFetching: selectFetching,
+  userCollections: selectUserCollections,
+  isUserFetching: selectUserFetching,
 });
 
 const MapDispatchToProps = (dispatch) => ({
-  setPageUrl: (url) => dispatch(setPageUrl(url)),
+  updateUserCollections: (data) => dispatch(updateUserCollections(data)),
 });
 
-export default connect(MapStateToProps, MapDispatchToProps)(Busines);
+export default connect(MapStateToProps, MapDispatchToProps)(UserPage);

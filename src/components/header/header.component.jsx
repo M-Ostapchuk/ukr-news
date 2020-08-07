@@ -4,15 +4,17 @@ import { connect } from "react-redux";
 import { setCountry } from "../../redux/news/news.actions";
 import { selectPageUrl } from "../../redux/news/news.selectors";
 import { createStructuredSelector } from "reselect";
-import './header.styles.scss'
-// import { history } from "../../history/history";
+import "./header.styles.scss";
+import { selectCurrentUser } from "../../redux/user/user.selectors";
+import { signOutStart } from "../../redux/user/user.actions";
 
 
-const Header = ({ setCountry, url }) => {
+
+const Header = ({ setCountry, url, user, signOutStart }) => {
+
   return (
     <HeaderContainer>
-
-      <OptionLink exact to="/" activeStyle={activeStyle}>
+      <OptionLink activeStyle={activeStyle} to="/homepage">
         Home
       </OptionLink>
       <OptionLink activeStyle={activeStyle} to="/business">
@@ -33,7 +35,18 @@ const Header = ({ setCountry, url }) => {
       <OptionLink activeStyle={activeStyle} to="/technology">
         Technology
       </OptionLink>
-      <select
+      {user ? (
+        <React.Fragment>
+        <OptionLink userLinkStyles activeStyle={activeStyle} to="/userpage">
+         Hi {user.displayName}
+      </OptionLink>
+        <OptionLink signOutLinkStyles to='' onClick={() => signOutStart()} >Sign out</OptionLink>
+        </React.Fragment>
+        ) : (
+          <OptionLink signInLinkStyles to="/signinandsignup">Sign in</OptionLink>
+      )}
+
+      {/* <select
         value={url.country}
         onChange={(e) => {
           setCountry({ country: e.target.value });
@@ -42,15 +55,17 @@ const Header = ({ setCountry, url }) => {
         <option value="ua">Ukraine</option>
         <option value="us">United States</option>
         <option value="de">Germany</option>
-      </select>
+      </select> */}
     </HeaderContainer>
   );
 };
 const MapStateToProps = createStructuredSelector({
   url: selectPageUrl,
+  user: selectCurrentUser
 });
 const MapDispatchToProps = (dispatch) => ({
   setCountry: (url) => dispatch(setCountry(url)),
+  signOutStart: () => dispatch(signOutStart())
 });
 
 export default connect(MapStateToProps, MapDispatchToProps)(Header);

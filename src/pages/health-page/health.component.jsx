@@ -1,5 +1,4 @@
-import React from "react";
-import Header from "../../components/header/header.component";
+import React, { useCallback } from "react";
 import {
   OverviewContainer,
   OverviewWrapper,
@@ -21,18 +20,20 @@ import { Route } from "react-router";
 
 import ItemOverview from "../../components/item-overview/item-overview.component";
 
+
 const Health = ({ collections, setPageUrl, match, url, isFetching, history }) => {
   const category = match.url.replace(/\//, "");
 
   useEffect(() => {
     setPageUrl({ country: url.country, category: category });
-  }, []);
+  }, [match.url]);
+
+
 
   return (
     <React.Fragment>
       <Route exact path={`${match.path}`}>
         <OverviewContainer>
-          <Header />
           {isFetching ? (
             <Spinner />
           ) : (
