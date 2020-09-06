@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, Suspense } from "react";
 import "./App.css";
 
 // React router
@@ -25,58 +25,90 @@ import { fetchCollectionStart } from "./redux/news/news.actions";
 // Reselect
 import { createStructuredSelector } from "reselect";
 import { selectUrl } from "./redux/news/news.selectors";
-import { getCurrentUserStart, getUserDataStart } from "./redux/user/user.actions";
+import {
+  getUserDataStart,
+} from "./redux/user/user.actions";
 
 // Font awesome
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { fab } from "@fortawesome/free-brands-svg-icons";
-import { faPlusCircle, faCheckCircle, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
+import {
+  faPlusCircle,
+  faCheckCircle,
+  faTrashAlt,
+  faBars,
+  faWindowClose,
+  faUser,
+  faChevronCircleDown,
+  faSearch,
+} from "@fortawesome/free-solid-svg-icons";
 import { selectCurrentUser } from "./redux/user/user.selectors";
 
-library.add(fab, faPlusCircle, faCheckCircle, faTrashAlt);
+library.add(
+  fab,
+  faPlusCircle,
+  faCheckCircle,
+  faTrashAlt,
+  faBars,
+  faWindowClose,
+  faUser,
+  faChevronCircleDown,
+  faSearch
+);
 
-const App = ({ url, fetchCollectionStart, currentUser, getUserDataStart }) => {
+const App = ({
+  url,
+  fetchCollectionStart,
+  getCurrentUserStart,
+  getUserDataStart,
+  currentUser
+}) => {
+  useEffect(() => {
+    getUserDataStart()
+  }, [currentUser]);
+
   useEffect(() => {
     fetchCollectionStart(url);
   }, [url]);
 
   return (
-    <div className='app-container'>
-      <Header />
-      <Switch>
-        <Route exact path="/" render={() => <Redirect to="/homepage" />} />
+    <Suspense fallback="loading">
+      <div className="app-container">
+        <Header />
+        <Switch>
+          <Route exact path="/" render={() => <Redirect to="/homepage" />} />
 
-        <Route path="/homepage" component={HomePage} />
+          <Route path="/homepage" component={HomePage} />
 
-        <Route path="/business" component={Busines} />
+          <Route path="/business" component={Busines} />
 
-        <Route path="/entertainment" component={Entertainment} />
+          <Route path="/entertainment" component={Entertainment} />
 
-        <Route path="/health" component={Health} />
+          <Route path="/health" component={Health} />
 
-        <Route path="/science" component={Science} />
+          <Route path="/science" component={Science} />
 
-        <Route path="/sports" component={Sports} />
+          <Route path="/sports" component={Sports} />
 
-        <Route path="/technology" component={Technology} />
+          <Route path="/technology" component={Technology} />
 
-        <Route path="/signinandsignup" component={SignInAndSignUp} />
+          <Route path="/signinandsignup" component={SignInAndSignUp} />
 
-        <Route path="/userpage" component={UserPage} />
-      </Switch>
-    </div>
+          <Route path="/userpage" component={UserPage} />
+        </Switch>
+      </div>
+    </Suspense>
   );
 };
 
 const mapStateToProps = createStructuredSelector({
   url: selectUrl,
-  currentUser: selectCurrentUser
+  currentUser: selectCurrentUser,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   fetchCollectionStart: (url) => dispatch(fetchCollectionStart(url)),
-  getCurrentUserStart: () => dispatch(getCurrentUserStart()),
-  getUserDataStart: () => dispatch(getUserDataStart())
+  getUserDataStart: () => dispatch(getUserDataStart()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

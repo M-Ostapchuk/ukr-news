@@ -1,6 +1,8 @@
 import firebase from "firebase/app";
 import "firebase/auth";
 import "firebase/firestore";
+
+// Redux actions
 import { updateUserCollections } from "../redux/user/user.actions";
 
 // Add the Firebase products that you want to use
@@ -84,7 +86,7 @@ export const addItemToFirebase = async (item) => {
         title,
         urlToImage,
         description,
-        url
+        url,
       });
     } catch (err) {
       console.log(err.message);
@@ -92,9 +94,7 @@ export const addItemToFirebase = async (item) => {
   }
 };
 
-export const deleteItemFromFirebase = async (docId) => {
-  const authtenticatedUser = await getCurrentUser();
-
+export const deleteItemFromFirebase = async (docId, authtenticatedUser) => {
   if (!authtenticatedUser) return;
 
   try {
@@ -104,18 +104,17 @@ export const deleteItemFromFirebase = async (docId) => {
   }
 };
 
-export const getUserCollections = async () => {
+export const getUserCollections = async (user) => {
   try {
-    const user = await getCurrentUser()
     const data = [];
-      db
-      .collection(`users/${user.uid}/collections`).get()
+    db.collection(`users/${user.uid}/collections`)
+      .get()
       .then((querySnapshot) => {
         querySnapshot.forEach((doc) => {
           data.push(doc.data());
         });
       });
-      return data;
+    return data;
   } catch (err) {
     console.log(err);
   }

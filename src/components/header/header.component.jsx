@@ -1,71 +1,117 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+
+// Components
+import SelectAndSearch from "../select-and-search/select-and-search.component";
+
+// Styles
 import { HeaderContainer, OptionLink, activeStyle } from "./header.styles";
+
+// Router
+
+// Redux
 import { connect } from "react-redux";
-import { setCountry } from "../../redux/news/news.actions";
-import { selectPageUrl } from "../../redux/news/news.selectors";
-import { createStructuredSelector } from "reselect";
-import "./header.styles.scss";
-import { selectCurrentUser } from "../../redux/user/user.selectors";
 import { signOutStart } from "../../redux/user/user.actions";
 
+// Select
+import { createStructuredSelector } from "reselect";
+import { selectPageUrl } from "../../redux/news/news.selectors";
+import { selectCurrentUser } from "../../redux/user/user.selectors";
 
+// Firebase
 
-const Header = ({ setCountry, url, user, signOutStart }) => {
+// Font awesome
+import { faChevronCircleDown } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
+// i18Next
+import { useTranslation } from "react-i18next";
+
+const Header = ({ currentUser, signOutStart }) => {
+  const { t } = useTranslation("common");
+
+  const [isFixed, setFixed] = useState(false);
+  const [isVisible, setVisible] = useState(false);
+
+  const handleScroll = () => {
+    let pageYPosition = window.pageYOffset;
+    if (pageYPosition >= 50) {
+      setFixed(true);
+    } else {
+      setFixed(false);
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", () => handleScroll);
+    };
+  }, []);
 
   return (
-    <HeaderContainer>
+    <HeaderContainer fixed={isFixed}>
       <OptionLink activeStyle={activeStyle} to="/homepage">
-        Home
+        {t("header.homepage")}
       </OptionLink>
       <OptionLink activeStyle={activeStyle} to="/business">
-        Busines
+        {t("header.busines")}
       </OptionLink>
       <OptionLink activeStyle={activeStyle} to="/entertainment">
-        Entertainment
+        {t("header.entertainment")}
       </OptionLink>
       <OptionLink activeStyle={activeStyle} to="/health">
-        Health
+        {t("header.health")}
       </OptionLink>
       <OptionLink activeStyle={activeStyle} to="/science">
-        Science
+        {t("header.science")}
       </OptionLink>
       <OptionLink activeStyle={activeStyle} to="/sports">
-        Sports
+        {t("header.sports")}
       </OptionLink>
       <OptionLink activeStyle={activeStyle} to="/technology">
-        Technology
+        {t("header.technology")}
       </OptionLink>
-      {user ? (
+      {currentUser ? (
         <React.Fragment>
-        <OptionLink userLinkStyles activeStyle={activeStyle} to="/userpage">
-         Hi {user.displayName}
-      </OptionLink>
-        <OptionLink signOutLinkStyles to='' onClick={() => signOutStart()} >Sign out</OptionLink>
+          <OptionLink
+            userlinkstyles="true"
+            activeStyle={activeStyle}
+            to="/userpage"
+          >
+            My Collections
+          </OptionLink>
+          <OptionLink
+            signoutlinkstyles="true"
+            to=""
+            onClick={() => signOutStart()}
+          >
+            Sign out
+          </OptionLink>
         </React.Fragment>
-        ) : (
-          <OptionLink signInLinkStyles to="/signinandsignup">Sign in</OptionLink>
+      ) : (
+        <OptionLink signinlinkstyles="true" to="/signinandsignup">
+          Sign in
+        </OptionLink>
       )}
-
-      {/* <select
-        value={url.country}
-        onChange={(e) => {
-          setCountry({ country: e.target.value });
+      <FontAwesomeIcon
+        className="icon"
+        icon={faChevronCircleDown}
+        color="blue"
+        size="lg"
+        onClick={() => {
+          setVisible(!isVisible);
         }}
-      >
-        <option value="ua">Ukraine</option>
-        <option value="us">United States</option>
-        <option value="de">Germany</option>
-      </select> */}
+      />
+      <SelectAndSearch visible={isVisible} />
     </HeaderContainer>
   );
 };
 const MapStateToProps = createStructuredSelector({
   url: selectPageUrl,
-  user: selectCurrentUser
+  currentUser: selectCurrentUser,
 });
 const MapDispatchToProps = (dispatch) => ({
-  setCountry: (url) => dispatch(setCountry(url)),
-  signOutStart: () => dispatch(signOutStart())
+  signOutStart: () => dispatch(signOutStart()),
 });
 
 export default connect(MapStateToProps, MapDispatchToProps)(Header);

@@ -1,15 +1,34 @@
 import React from "react";
+import { useState } from "react";
+
+// Components
+
+// Styles
 import "./news-item.styles.scss";
+
+// Router
+
+// Redux
+import { connect } from "react-redux";
+
+// Select
+import { selectCurrentUser } from "../../redux/user/user.selectors";
+import { createStructuredSelector } from "reselect";
+
+// Firebase
 import {
   addItemToFirebase,
   deleteItemFromFirebase,
 } from "../../firebase/firebase";
+
+// Font awesome
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlusCircle, faCheckCircle, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
-import { useState } from "react";
 
 
-const Item = ({ item, history, match, isWriteWhole, isItemFromFirebase }) => {
+
+
+const Item = ({ item, history, match, isWriteWhole, isItemFromFirebase, currentUser }) => {
   let docId = "";
   for (let i = 0; i < item.title.length; i++) {
     docId += item.title.codePointAt(i);
@@ -23,7 +42,7 @@ const Item = ({ item, history, match, isWriteWhole, isItemFromFirebase }) => {
           className="icon"
           size="lg"
           onClick={() => {
-            deleteItemFromFirebase(docId)
+            deleteItemFromFirebase(docId, currentUser)
             localStorage.removeItem(`${docId}`);
           }}
           onMouseEnter={() => {
@@ -61,4 +80,8 @@ const Item = ({ item, history, match, isWriteWhole, isItemFromFirebase }) => {
   );
 };
 
-export default Item;
+const MapStateToProps = createStructuredSelector({
+  currentUser: selectCurrentUser
+})
+
+export default connect(MapStateToProps)(Item);

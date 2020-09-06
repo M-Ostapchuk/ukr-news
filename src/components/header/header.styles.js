@@ -35,29 +35,23 @@ const signOutLinkStyles = css`
 
 const userLinkStyles = css`
   color: white;
-  background-color: grey;
-  border-radius: 10px;
+  background-color: #5110ed;
+  border-radius: 30px;
   width: auto;
-  height: 90%;
-  padding: 0;
+  min-width: 100px;
+  height: 25px;
+  padding: 0 5px;
+  line-height: 25px;
   font-size: 12px;
-  display: flex;
-  padding: 0 10px;
 
   &:hover {
     opacity: 0.5;
   }
 `;
 
-
 export const activeStyle = {
   backgroundColor: "#5110ed",
 };
-
-export const HeaderSelect = styled.select`
-  width: 100px;
-  height: 25px;
-`;
 
 export const HeaderContainer = styled.div`
   background: rgb(6, 6, 6);
@@ -65,14 +59,24 @@ export const HeaderContainer = styled.div`
   display: flex;
   justify-content: space-around;
   align-items: center;
+  width: 100%;
+  z-index: 10;
+  position: relative;
+
+  &:hover {
+    opacity: 1;
+  }
+  position: ${(props) => (props.fixed ? "fixed" : "absolute")};
+  opacity: ${(props) => (props.fixed ? "0.5" : "1")};
 `;
+
 const getLinkStyles = (props) => {
-  if (props.signInLinkStyles) {
+  if (props.signinlinkstyles) {
     return signInLinkStyles;
-  } else if (props.signOutLinkStyles) {
-    return signOutLinkStyles
-  } else if (props.userLinkStyles) {
-    return userLinkStyles
+  } else if (props.signoutlinkstyles) {
+    return signOutLinkStyles;
+  } else if (props.userlinkstyles) {
+    return userLinkStyles;
   }
 };
 
@@ -83,13 +87,18 @@ export const OptionLink = styled(NavLink)`
   background-color: rgb(6, 6, 6);
   text-transform: uppercase;
   color: #ffffff;
-  // width: auto;
-  padding: 0 30px;
+  padding: 0 10px;
   letter-spacing: 0.5px;
   font-weight: bolder;
   display: flex;
   justify-content: center;
   border: none;
+  font-size: 15px;
+
+  @media screen and (max-width: 868px) {
+    font-size: 10px;
+    padding: 0px;
+  }
 
   &:hover {
     opacity: 0.5;

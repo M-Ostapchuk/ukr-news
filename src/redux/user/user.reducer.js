@@ -2,7 +2,7 @@ import UserActionTypes from "./user.types";
 
 const INITIAL_STATE = {
   currentUser: null,
-  userFetching: false,
+  userCollectionsFetching: false,
   err: null,
   userCollections: [],
 };
@@ -21,10 +21,16 @@ const userReducer = (state = INITIAL_STATE, action) => {
         err: null,
         currentUser: null,
       };
+    case UserActionTypes.GET_CURRENT_USER_START:
+      return {
+        ...state,
+        userFetching: true
+      };
     case UserActionTypes.GET_CURRENT_USER_SUCCESS:
       return {
         ...state,
         err: null,
+        userFetching: false,
         currentUser: action.payload,
       };
     case UserActionTypes.SIGN_UP_SUCCESS:
@@ -58,13 +64,13 @@ const userReducer = (state = INITIAL_STATE, action) => {
     case UserActionTypes.GET_USER_DATA_START:
       return {
         ...state,
-        userFetching: true,
+        userCollectionsFetching: true,
       };
     case UserActionTypes.GET_USER_DATA_SUCCESS:
       return {
         ...state,
-        userFetching: false,
         userCollections: action.payload,
+        userCollectionsFetching: false,
       };
     case UserActionTypes.USER_FAILURE:
       return {

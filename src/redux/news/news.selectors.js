@@ -18,6 +18,12 @@ export const selectUrl = createSelector(
     `https://newsapi.org/v2/top-headlines?country=${pageUrl.country}&category=${pageUrl.category}&apiKey=587e67c49058413b8c59a9bc798f0bfb`
 );
 
+// export const selectSearchUrl = createSelector(
+//   [selectNews],
+//   (news) =>
+//     `http://newsapi.org/v2/everything?q=${news.searchUrl}&from=2020-08-10&sortBy=popularity&apiKey=587e67c49058413b8c59a9bc798f0bfb`
+// );
+
 export const selectFetching = createSelector(
   [selectNews],
   (news) => news.isFetching
@@ -31,7 +37,7 @@ export const selectErrorMessage = createSelector(
 export const selectCollectionsWithId = createSelector(
   selectCollections,
   (collections) =>
-    collections.map(( item) => {
+    collections.map((item) => {
       let docId = "";
       for (let i = 0; i < item.title.length; i++) {
         docId += item.title.codePointAt(i);
@@ -41,7 +47,6 @@ export const selectCollectionsWithId = createSelector(
         value: docId,
       });
     })
-    
 );
 
 export const selectCollectionItem = (urlParam) => {

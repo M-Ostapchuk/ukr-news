@@ -10,7 +10,10 @@ export const ItemOverviewContainer = styled.div`
   margin: 0px auto;
   box-shadow: 0px 0px 4px 0px #d4dce2;
   padding: 0px 50px;
-  margin: 20px auto;
-  // background-color: #f2f3f5;
+  margin: 70px auto 20px;
   background-color: #ffffff;
+
+  @media screen and (max-width: 868px) {
+
+  }
 `;

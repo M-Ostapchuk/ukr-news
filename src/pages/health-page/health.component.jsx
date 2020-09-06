@@ -1,34 +1,45 @@
-import React, { useCallback } from "react";
+import React from "react";
+import { useEffect } from "react";
+
+// Components
+import Spinner from "../../components/spinner/spinner.component";
+import ItemOverview from "../../components/item-overview/item-overview.component";
+import Item from "../../components/news-item/news-item.component";
+
+// Styles
 import {
   OverviewContainer,
   OverviewWrapper,
 } from "../../components/page-overview/page.overview.styles";
+
+// Router
+import { Route } from "react-router";
+
+// Redux
 import { connect } from "react-redux";
+import { setPageUrl } from "../../redux/news/news.actions";
+
+// Select
 import { createStructuredSelector } from "reselect";
 import {
   selectCollectionsWithId,
   selectPageUrl,
   selectFetching,
 } from "../../redux/news/news.selectors";
-import Item from "../../components/news-item/news-item.component";
-import { setPageUrl } from "../../redux/news/news.actions";
-import { useEffect } from "react";
 
-import Spinner from "../../components/spinner/spinner.component";
-
-import { Route } from "react-router";
-
-import ItemOverview from "../../components/item-overview/item-overview.component";
-
-
-const Health = ({ collections, setPageUrl, match, url, isFetching, history }) => {
+const Health = ({
+  collections,
+  setPageUrl,
+  match,
+  url,
+  isFetching,
+  history,
+}) => {
   const category = match.url.replace(/\//, "");
 
   useEffect(() => {
     setPageUrl({ country: url.country, category: category });
-  }, [match.url]);
-
-
+  }, []);
 
   return (
     <React.Fragment>
@@ -39,7 +50,12 @@ const Health = ({ collections, setPageUrl, match, url, isFetching, history }) =>
           ) : (
             <OverviewWrapper>
               {collections.map((item) => (
-                <Item item={item} key={item.id} history={history} match={match} />
+                <Item
+                  item={item}
+                  key={item.id}
+                  history={history}
+                  match={match}
+                />
               ))}
             </OverviewWrapper>
           )}

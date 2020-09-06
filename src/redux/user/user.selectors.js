@@ -12,6 +12,11 @@ export const selectUserCollections = createSelector(
   (user) => user.userCollections
 )
 
+export const selectFetchingUserCollections = createSelector(
+  [selectUser],
+  (user) => user.userCollectionsFetching
+)
+
 export const selectUserFetching = createSelector(
   [selectUser],
   (user) => user.userFetching

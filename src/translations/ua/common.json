@@ -1,0 +1,14 @@
+{
+    "header": {
+        "homepage": "Головна",
+        "busines": "Бізнес",
+        "entertainment": "Шоу бізнес",
+        "health": "Медицина",
+        "science": "Наука",
+        "sports": "Спорт",
+        "technology": "Технології"
+    },
+    "button": {
+        "readMore": "Читати повністю"
+    }
+}

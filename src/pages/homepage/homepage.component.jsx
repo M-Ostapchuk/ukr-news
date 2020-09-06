@@ -1,4 +1,20 @@
-import React, { useCallback } from 'react';
+import React from "react";
+import { useEffect } from "react";
+
+// Components
+import Item from "../../components/news-item/news-item.component";
+import Spinner from "../../components/spinner/spinner.component";
+import ItemOverview from "../../components/item-overview/item-overview.component";
+
+// Styles
+import {
+  OverviewContainer,
+  OverviewWrapper,
+} from "../../components/page-overview/page.overview.styles";
+
+// Router
+import { Route } from "react-router";
+
 // Redux
 import { connect } from "react-redux";
 import { setPageUrl } from "../../redux/news/news.actions";
@@ -11,37 +27,33 @@ import {
 } from "../../redux/news/news.selectors";
 import { createStructuredSelector } from "reselect";
 
-// Styles
-import {
-  OverviewContainer,
-  OverviewWrapper,
-} from "../../components/page-overview/page.overview.styles";
-
-// Components
-import Item from "../../components/news-item/news-item.component";
-import Spinner from "../../components/spinner/spinner.component";
-import { Route } from "react-router";
-import ItemOverview from "../../components/item-overview/item-overview.component";
-import { useEffect } from 'react';
-
-
-const HomePage = ({ collections, setPageUrl, url, isFetching,match, history }) => {
-
+const HomePage = ({
+  collections,
+  setPageUrl,
+  url,
+  isFetching,
+  match,
+  history,
+}) => {
   useEffect(() => {
-    setPageUrl({ country: url.country, category: ' ' });
-  },[match.url])
-
+    setPageUrl({ country: url.country, category: " " });
+  }, []);
 
   return (
     <React.Fragment>
-      <Route exact path={`${match.path}`} >
+      <Route exact path={`${match.path}`}>
         <OverviewContainer>
           {isFetching ? (
             <Spinner />
           ) : (
             <OverviewWrapper>
               {collections.map((item) => (
-                <Item key={item.id} item={item} history={history} match={match} />
+                <Item
+                  key={item.id}
+                  item={item}
+                  history={history}
+                  match={match}
+                />
               ))}
             </OverviewWrapper>
           )}

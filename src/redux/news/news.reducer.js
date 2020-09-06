@@ -7,17 +7,19 @@ const INITIAL_STATE = {
   pageUrl: {
     category: "",
     country: "ua",
-  },
+  }
 };
 
 const newsReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
+    case NewsActionTypes.SEARCH_COLLECTIONS_START:
     case NewsActionTypes.FETCH_COLLECTIONS_START:
       return {
         ...state,
         isFetching: true,
       };
     case NewsActionTypes.FETCH_COLLECTIONS_SUCCESS:
+    case NewsActionTypes.SEARCH_COLLECTIONS_SUCCESS:
       return {
         ...state,
         collections: action.payload,
@@ -34,14 +36,14 @@ const newsReducer = (state = INITIAL_STATE, action) => {
         pageUrl: { ...state.pageUrl, ...action.payload },
       };
     case NewsActionTypes.FETCH_COLLECTIONS_FAILURE:
+    case NewsActionTypes.SEARCH_COLLECTIONS_FAILURE:
       return {
         ...state,
         isFetching: false,
         errMessage: action.payload,
       };
     default:
-      return state
-      
+      return state;
   }
 };
 

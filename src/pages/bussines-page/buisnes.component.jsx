@@ -1,13 +1,18 @@
-import React, { useEffect, useCallback } from "react";
+import React, { useEffect } from "react";
 
 // Components
 import Item from "../../components/news-item/news-item.component";
+import ItemOverview from "../../components/item-overview/item-overview.component";
+import Spinner from "../../components/spinner/spinner.component";
 
 // Styles
 import {
   OverviewContainer,
   OverviewWrapper,
 } from "../../components/page-overview/page.overview.styles";
+
+// Router
+import { Route } from "react-router";
 
 // Redux
 import { connect } from "react-redux";
@@ -18,12 +23,6 @@ import {
   selectFetching,
 } from "../../redux/news/news.selectors";
 import { setPageUrl } from "../../redux/news/news.actions";
-
-import ItemOverview from "../../components/item-overview/item-overview.component";
-
-import { Route } from "react-router";
-import Spinner from "../../components/spinner/spinner.component";
-
 
 const Busines = ({
   collections,
@@ -37,7 +36,7 @@ const Busines = ({
 
   useEffect(() => {
     setPageUrl({ country: url.country, category: category });
-  }, [match.url]);
+  }, []);
 
   return (
     <React.Fragment>

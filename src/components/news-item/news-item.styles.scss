@@ -14,12 +14,12 @@
   box-shadow: 0px 0px 4px 0px #d4dce2;
   padding: 20px;
   background-color: #ffffff;
-  // box-sizing: border-box;
   border-radius: 5px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   position: relative;
+  overflow: hidden;
 
   .item-title {
     text-align: center;
@@ -31,18 +31,28 @@
       color: blue;
       cursor: pointer;
     }
+
+    @media screen and (max-width: 868px) {
+      font-size: 15px;
+      margin-bottom: 0;
+    }
   }
 
   .item-description {
     width: 100%;
     height: 30%;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
+    overflow: hidden;
+
+    @media screen and (max-width: 868px) {
+      margin-bottom: 0;
+    }
   }
 
   img {
     width: 100%;
     height: 50%;
-    margin: 20px 0px 0px 0px;
+    margin: 10px 0px 0px 0px;
   }
 
   .icon {
@@ -53,6 +63,11 @@
 
     &:hover {
       color: blue;
+    }
+
+    @media screen and (max-width: 868px) {
+      right: 5px;
+      top: 5px;
     }
   }
 
@@ -72,5 +87,10 @@
     animation-name: scaledItem;
     animation-duration: 500ms;
     animation-fill-mode: forwards;
+  }
+
+  @media screen and (max-width: 868px) {
+    height: 400px;
+    padding: 5px;
   }
 }

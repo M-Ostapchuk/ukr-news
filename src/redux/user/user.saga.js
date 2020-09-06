@@ -7,8 +7,6 @@ import {
   getUserCollections,
 } from "../../firebase/firebase";
 import {
-  // getCurrentUserSuccess,
-  // getCurrentUserFailure,
   signUpFailure,
   emailSignInFailure,
   signUpSuccess,
@@ -42,7 +40,6 @@ export function* signInUserAsync({ payload: { email, password } }) {
     yield auth.signInWithEmailAndPassword(email, password);
     const currentUser = yield getCurrentUser();
     const userData = yield getUserData(currentUser);
-    yield createUserProfileDocument(currentUser);
     yield put(emailSignInSuccess(userData));
   } catch (err) {
     yield put(emailSignInFailure(err));
@@ -71,7 +68,8 @@ export function* signOutAsync() {
 
 export function* getUserCollectionsAsync() {
   try {
-    const data = yield getUserCollections();
+    const currentUser = yield getCurrentUser()
+    const data = yield getUserCollections(currentUser);
     yield put(getUserDataSuccess(data));
   } catch (err) {
     yield put(UserFailure(err));

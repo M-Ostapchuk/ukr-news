@@ -1,7 +1,9 @@
-import React, { Component, useEffect, useCallback } from "react";
+import React, { useEffect } from "react";
 
 // Components
 import Item from "../../components/news-item/news-item.component";
+import ItemOverview from "../../components/item-overview/item-overview.component";
+import Spinner from "../../components/spinner/spinner.component";
 
 // Styles
 import {
@@ -9,57 +11,61 @@ import {
   OverviewWrapper,
 } from "../../components/page-overview/page.overview.styles";
 
+// Router
+import { Route } from "react-router";
+
+
 // Redux
 import { connect } from "react-redux";
 import { createStructuredSelector } from "reselect";
 import {
   selectCollectionsWithId,
   selectPageUrl,
-  selectFetching,
 } from "../../redux/news/news.selectors";
+import { updateUserCollections } from "../../redux/user/user.actions";
 
-import ItemOverview from "../../components/item-overview/item-overview.component";
-
-import { Route } from "react-router";
-import Spinner from "../../components/spinner/spinner.component";
+// Select
 import {
   selectUserCollections,
-  selectUserFetching,
+  selectFetchingUserCollections,
 } from "../../redux/user/user.selectors";
-import { updateUserCollections } from "../../redux/user/user.actions";
-import { getCurrentUser, db } from "../../firebase/firebase";
+
+// Firebase
+import { db, getCurrentUser } from "../../firebase/firebase";
 
 const UserPage = ({
   match,
   history,
   userCollections,
-  isUserFetching,
-  updateUserCollections,
+  isUserCollectionsFetching,
+  updateUserCollections
 }) => {
   useEffect(() => {
     getUserDataHandler();
-  }, [match]);
+  }, []);
+
 
   const getUserDataHandler = async () => {
-    const user = await getCurrentUser();
     const data = [];
+    const user = await getCurrentUser()
     const collectionRef = db.collection(`users/${user.uid}/collections`);
     collectionRef.onSnapshot(async (snapshot) => {
       await snapshot.docs.forEach((doc) => {
         data.push(doc.data());
       });
-      updateUserCollections(data);
+      await updateUserCollections(data);
       data.splice(0, data.length);
     });
   };
+
 
   return (
     <React.Fragment>
       <Route exact path={`${match.path}`}>
         <OverviewContainer>
-          {isUserFetching ? (
+          {isUserCollectionsFetching? (
             <Spinner />
-          ) : (
+            ) : (
             <OverviewWrapper>
               {userCollections.map((item) => (
                 <Item
@@ -83,9 +89,8 @@ const UserPage = ({
 const MapStateToProps = createStructuredSelector({
   collections: selectCollectionsWithId,
   url: selectPageUrl,
-  isFetching: selectFetching,
   userCollections: selectUserCollections,
-  isUserFetching: selectUserFetching,
+  isUserCollectionsFetching: selectFetchingUserCollections,
 });
 
 const MapDispatchToProps = (dispatch) => ({

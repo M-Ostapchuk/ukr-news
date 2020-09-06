@@ -1,0 +1,14 @@
+{
+    "header": {
+        "homepage": "Homepage",
+        "busines": "Busines",
+        "entertainment": "Entertainment",
+        "health": "Health",
+        "science": "Science",
+        "sports": "Sports",
+        "technology": "Technology"
+    },
+    "button": {
+        "readMore": "Read more..."
+    }
+}
