@@ -12,4 +12,14 @@ export const StyledDiv = styled.div`
   align-items: center;
   justify-content: space-around;
   display: ${(props) => (props.visible ? "flex" : "none")};
+
+  @media screen and (max-width: 768px) {
+    display: flex;
+    width: 80%;
+    position: relative;
+    justify-content: space-between;
+    margin-bottom: 100px;
+    height: 80px;
+    
+  }
 `;

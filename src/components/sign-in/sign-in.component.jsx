@@ -6,6 +6,7 @@ import CustomButton from "../custom-button/custom-button.component";
 
 // Styles
 import "./sign-in.styles.scss";
+import { SignInContainer } from "./sign-in.styles.js";
 
 // Router
 
@@ -42,7 +43,7 @@ const SignIn = ({ emailSignInStart, googleSignInStart }) => {
   };
 
   return (
-    <div className="sign-in">
+    <SignInContainer>
       <h2>I already have an account</h2>
       <span>Sign in with your email and password</span>
       <form onSubmit={handleSubmit}>
@@ -75,7 +76,7 @@ const SignIn = ({ emailSignInStart, googleSignInStart }) => {
           </CustomButton>
         </div>
       </form>
-    </div>
+    </SignInContainer>
   );
 };
 

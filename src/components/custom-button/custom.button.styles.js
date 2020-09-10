@@ -59,4 +59,10 @@ export const CustomButtonContainer = styled.button`
   justify-content: center;
   border: none;
   ${getButtonStyles}
+
+  @media screen and (max-width: 1050px) {
+    font-size: 12px;
+    min-width: 105px;
+    padding: 0 25px;
+  }
 `;

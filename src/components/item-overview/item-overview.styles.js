@@ -13,7 +13,5 @@ export const ItemOverviewContainer = styled.div`
   margin: 70px auto 20px;
   background-color: #ffffff;
 
-  @media screen and (max-width: 868px) {
-
-  }
+ 
 `;

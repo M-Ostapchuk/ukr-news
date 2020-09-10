@@ -5,7 +5,6 @@ const signInLinkStyles = css`
   color: white;
   background-color: #5110ed;
   border-radius: 30px;
-  width: auto;
   min-width: 100px;
   height: 25px;
   padding: 0;
@@ -53,6 +52,14 @@ export const activeStyle = {
   backgroundColor: "#5110ed",
 };
 
+export const HeaderWrapper = styled.div`
+  background: rgb(6, 6, 6);
+  height: 50px;
+  width: 100%;
+  position: relative;
+
+`;
+
 export const HeaderContainer = styled.div`
   background: rgb(6, 6, 6);
   height: 50px;
@@ -62,6 +69,18 @@ export const HeaderContainer = styled.div`
   width: 100%;
   z-index: 10;
   position: relative;
+
+  @media screen and (max-width: 768px) {
+    margin-top: 50px;
+    height: 100vh;
+    width: 100%;
+    flex-direction: column;
+    position: fixed;
+    overflow: scroll;
+    
+
+    top: ${(props) => (props.show ? "0px" : "-800px")};
+  }
 
   &:hover {
     opacity: 1;
@@ -95,9 +114,15 @@ export const OptionLink = styled(NavLink)`
   border: none;
   font-size: 15px;
 
-  @media screen and (max-width: 868px) {
+  @media screen and (max-width: 920px) {
     font-size: 10px;
     padding: 0px;
+  }
+
+  @media screen and (max-width: 768px) {
+    width: 100%;
+    height: 40px;
+    line-height: 40px;
   }
 
   &:hover {
@@ -105,4 +130,23 @@ export const OptionLink = styled(NavLink)`
   }
 
   ${getLinkStyles}
+`;
+
+export const ShevronIconContainer = styled.div`
+  display: block;
+
+  @media screen and (max-width: 768px) {
+    display: none;
+  }
+`;
+
+export const BarsIconContainer = styled.div`
+  display: none;
+  position: absolute;
+  left: 20px;
+  top: 10px;
+
+  @media screen and (max-width: 768px) {
+    display: block;
+  }
 `;

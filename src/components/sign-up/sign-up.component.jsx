@@ -6,6 +6,7 @@ import FormInput from "../form-input/form-input.component";
 
 // Styles
 import "./sign-up.styles.scss";
+import { SignUpContainer } from "./sign-up.styles.js";
 
 // Router
 
@@ -53,7 +54,7 @@ const SignUp = ({ signUpStart }) => {
   };
 
   return (
-    <div className="sign-up">
+    <SignUpContainer>
       <h2 className="title">I dont have an account</h2>
       <span>Sign up with your email and password</span>
       <form className="sign-up-form" onSubmit={handleSubmit}>
@@ -91,7 +92,7 @@ const SignUp = ({ signUpStart }) => {
         />
         <CustomButton type="submit">Sign up</CustomButton>
       </form>
-    </div>
+    </SignUpContainer>
   );
 };
 
